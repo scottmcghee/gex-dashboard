@@ -84,7 +84,7 @@ variables; see [.env.example](.env.example).
 | `GEX_PROVIDER` | `synthetic` | `synthetic` or `convexvalue` |
 | `GEX_SYMBOLS` | `SPY,SPX,QQQ` | Symbols offered in the sidebar |
 | `GEX_CLOCK` | `replay` for synthetic, else `system` | `system`, `fixed` or `replay` |
-| `GEX_CLOCK_START` | 10:30 New York time, latest weekday | ISO datetime for the `fixed` and `replay` clocks |
+| `GEX_CLOCK_START` | 09:30 New York time (the open), latest weekday | ISO datetime for the `fixed` and `replay` clocks |
 | `GEX_CLOCK_SPEED` | `1` | Replay speed multiplier |
 | `GEX_STRIKE_RANGE` | `0.10` | Strikes kept, as a fraction of spot either side: 0.02 to 0.25, the sidebar slider's range |
 | `GEX_RISK_FREE_RATE` | `0.04` | Rate for the synthetic chain and the gamma-flip repricing |

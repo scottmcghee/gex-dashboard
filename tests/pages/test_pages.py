@@ -83,6 +83,7 @@ def badge(at: AppTest, text: str):  # type: ignore[no-untyped-def]
     [
         (IN_SESSION, True),
         ("2026-10-19T08:00:00-04:00", False),  # before the open: nothing traded yet
+        ("2026-10-19T09:30:00-04:00", False),  # the open, the default replay start
         ("2026-10-19T18:30:00-04:00", True),  # after the close
         ("2026-10-24T12:00:00-04:00", True),  # Saturday: Friday's session
     ],

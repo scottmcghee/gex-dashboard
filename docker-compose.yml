@@ -7,7 +7,7 @@
 #
 # The replay clock loops one trading session, so the 0DTE expiration and the
 # intraday volume are live at any hour. GEX_CLOCK_START pins the session
-# replayed (for example 2026-10-19T11:00); the default is 10:30 New York time
+# replayed (for example 2026-10-19T11:00); the default is 09:30 New York time
 # on the latest weekday.
 name: gex-dashboard-demo
 
