@@ -1,0 +1,95 @@
+[project]
+name = "gex-dashboard"
+version = "0.1.0"
+description = "Dealer gamma, vanna and charm exposure analytics computed from an option chain snapshot."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Scott McGhee" }]
+requires-python = ">=3.12"
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Typing :: Typed",
+]
+# Tested versions are pinned in uv.lock; the upper bounds keep `pip install .` safe.
+# The optional ConvexValue adapter needs `convexlib`, which is not on PyPI; install it
+# separately with `uv pip install "convexlib @ git+https://github.com/convexvalue/convexlib.git"`.
+dependencies = [
+    "numpy>=2.0,<3",
+    "pandas>=2.2,<4",
+    "plotly>=7.1.0,<8",
+    "scipy>=1.14,<2",
+    "streamlit>=1.52,<2",
+]
+
+[project.scripts]
+gex-dashboard = "gex_dashboard.__main__:main"
+
+[project.urls]
+Repository = "https://github.com/scottmcghee/gex-dashboard"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pandas-stubs>=2.2",
+    "pre-commit>=4.0",
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling>=1.32.4"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gex_dashboard"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src", "tests", "docs", "extras", "README.md", "CONTRIBUTING.md", "LICENSE",
+    "pyproject.toml", "uv.lock", "Dockerfile", "docker-compose.yml", ".env.example",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "PT", "C4", "PD"]
+# Math and typographic signs used on purpose in user-facing text.
+allowed-confusables = ["−", "×", "σ", "–"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src"]
+strict = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["scipy.*", "convexlib.*", "plotly.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit", "tests/pages"]
+# --cov makes a plain `uv run pytest` enforce fail_under; pass --no-cov for a quick subset.
+addopts = "-ra --strict-markers --cov --cov-report=term-missing"
+
+[tool.coverage.run]
+source_pkgs = ["gex_dashboard"]
+branch = true
+# The entry-point script runs inside Streamlit's AppTest, which coverage can't trace; it is
+# exercised by tests/pages/test_pages.py instead. The tab modules it imports are traced.
+# __main__.py only hands over to `streamlit run`; the CI docker job starts the app through it.
+omit = ["*/gex_dashboard/app.py", "*/gex_dashboard/__main__.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 90
+exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError", "\\.\\.\\."]

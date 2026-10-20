@@ -1,0 +1,24 @@
+# Self-contained demo: the dashboard on the synthetic option market. No
+# database, market-data feed or API keys (the first build downloads the base
+# image and packages).
+#
+#   docker compose up --build      # then open http://localhost:8501
+#   docker compose down            # stop and remove the container
+#
+# The replay clock loops one trading session, so the 0DTE expiration and the
+# intraday volume are live at any hour. GEX_CLOCK_START pins the session
+# replayed (for example 2026-10-19T11:00); the default is 10:30 New York time
+# on the latest weekday.
+name: gex-dashboard-demo
+
+services:
+  app:
+    build: .
+    environment:
+      GEX_PROVIDER: synthetic
+      GEX_CLOCK: replay
+      GEX_CLOCK_START: ${GEX_CLOCK_START:-}
+      GEX_SYNTHETIC_SEED: ${GEX_SYNTHETIC_SEED:-0}
+    ports:
+      - "127.0.0.1:${DEMO_APP_PORT:-8501}:8501"
+    # The image's HEALTHCHECK polls /_stcore/health; `docker compose up --wait` waits on it.

@@ -1,0 +1,107 @@
+// GEX Live Levels — TradingView Indicator
+// Draws horizontal lines for gamma flip, call/put walls, expected move,
+// vega peaks and vanna flip from the GEX Dashboard.
+//
+// Setup:
+//   1. Open TradingView → Pine Editor → paste this script → Add to chart
+//   2. In the GEX Dashboard Live Levels tab, copy the levels string
+//   3. Paste into the indicator's "Levels" input in Settings
+//   4. Lines update instantly when you paste a new string
+
+//@version=6
+indicator("GEX Live Levels", overlay=true, max_lines_count=12, max_labels_count=12)
+
+levels_input = input.text_area(defval="", title="Levels", tooltip="Paste the levels string from GEX Dashboard")
+
+// Colors
+COLOR_GF  = color.red
+COLOR_CW  = color.green
+COLOR_PW  = #7B68EE  // Medium Slate Blue
+COLOR_EM  = color.yellow
+COLOR_VP  = color.teal
+COLOR_VF  = color.orange
+
+// Persistent arrays for delete-and-redraw
+var lines  = array.new<line>()
+var labels = array.new<label>()
+
+if barstate.islast
+    // Clear previous drawings (guard: Pine for-loop executes once even when end < start)
+    if lines.size() > 0
+        for i = 0 to lines.size() - 1
+            lines.get(i).delete()
+        lines.clear()
+    if labels.size() > 0
+        for i = 0 to labels.size() - 1
+            labels.get(i).delete()
+        labels.clear()
+
+    if str.length(levels_input) > 0
+        // Parse and draw each level
+        pairs = str.split(levels_input, "|")
+        if array.size(pairs) > 0
+            for i = 0 to array.size(pairs) - 1
+                pair = array.get(pairs, i)
+                eq   = str.pos(pair, "=")
+                if eq >= 0
+                    key   = str.substring(pair, 0, eq)
+                    value = str.tonumber(str.substring(pair, eq + 1))
+                    if not na(value)
+                        // Determine color, style, and display name
+                        col   = color.gray
+                        style = line.style_solid
+                        name  = key
+
+                        if key == "GF"
+                            col   := COLOR_GF
+                            name  := "Gamma Flip"
+                        else if key == "CW1"
+                            col   := COLOR_CW
+                            name  := "Call Wall 1"
+                        else if key == "CW2"
+                            col   := COLOR_CW
+                            style := line.style_dashed
+                            name  := "Call Wall 2"
+                        else if key == "CW3"
+                            col   := COLOR_CW
+                            style := line.style_dotted
+                            name  := "Call Wall 3"
+                        else if key == "PW1"
+                            col   := COLOR_PW
+                            name  := "Put Wall 1"
+                        else if key == "PW2"
+                            col   := COLOR_PW
+                            style := line.style_dashed
+                            name  := "Put Wall 2"
+                        else if key == "PW3"
+                            col   := COLOR_PW
+                            style := line.style_dotted
+                            name  := "Put Wall 3"
+                        else if key == "EU"
+                            col   := COLOR_EM
+                            style := line.style_dashed
+                            name  := "Expected Move ↑"
+                        else if key == "EL"
+                            col   := COLOR_EM
+                            style := line.style_dashed
+                            name  := "Expected Move ↓"
+                        else if key == "VPU"
+                            col   := COLOR_VP
+                            style := line.style_dashed
+                            name  := "Vega Peak ↑"
+                        else if key == "VPL"
+                            col   := COLOR_VP
+                            style := line.style_dashed
+                            name  := "Vega Peak ↓"
+                        else if key == "VF"
+                            col   := COLOR_VF
+                            name  := "Vanna Flip"
+
+                        l = line.new(bar_index - 1, value, bar_index, value,
+                             extend=extend.both, color=col, style=style, width=1)
+                        lines.push(l)
+
+                        lb = label.new(bar_index + 20, value,
+                             text=name + " " + str.tostring(value),
+                             style=label.style_none, textcolor=col, size=size.small)
+                        labels.push(lb)

@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+build/
+dist/
+*.egg-info/
+
+# Tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Secrets and local data
+.env
+.env.*
+!.env.example
+*.csv
+*.parquet
+*.log
+research_results/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+
+# Never commit private notes, investigations or third-party material
+resume.txt
+*_for_claude/
+*_investigation/
+*.pdf
+*.mp4
