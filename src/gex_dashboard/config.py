@@ -14,7 +14,7 @@ A replay clock started outside a session rolls forward to the next 09:30 open
 | ``GEX_PROVIDER`` | ``synthetic`` | Chain provider name (see ``gex_dashboard.providers``) |
 | ``GEX_SYMBOLS`` | ``SPY,SPX,QQQ`` | Comma-separated symbols offered in the UI |
 | ``GEX_CLOCK`` | ``replay`` for synthetic, else ``system`` | ``system``, ``fixed`` or ``replay`` |
-| ``GEX_CLOCK_START`` | 10:30 New York, latest weekday | ISO datetime for ``fixed``/``replay`` |
+| ``GEX_CLOCK_START`` | 09:30 New York, latest weekday | ISO datetime for ``fixed``/``replay`` |
 | ``GEX_CLOCK_SPEED`` | ``1`` | Replay speed multiplier |
 | ``GEX_STRIKE_RANGE`` | ``0.10`` | Strikes kept, as a fraction of spot either side (0.02-0.25) |
 | ``GEX_RISK_FREE_RATE`` | ``0.04`` | Rate for the synthetic chain and gamma repricing |

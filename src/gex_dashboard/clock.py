@@ -205,7 +205,7 @@ def simulation_window(now: datetime) -> tuple[datetime, int]:
     return open_dt, SESSION_MINUTES
 
 
-def default_replay_start(today: date, at: time = time(10, 30)) -> datetime:
+def default_replay_start(today: date, at: time = time(9, 30)) -> datetime:
     """``at`` on ``today``, or on the last trading day when ``today`` is a weekend."""
     day = today if is_trading_day(today) else previous_trading_day(today)
     return datetime.combine(day, at, tzinfo=MARKET_TZ)

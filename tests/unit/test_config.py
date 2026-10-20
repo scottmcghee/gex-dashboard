@@ -105,4 +105,4 @@ class TestMakeClock:
         assert isinstance(c, ReplayClock)
         assert c.speed == 5.0
         assert c.start.weekday() < 5
-        assert (c.start.hour, c.start.minute) == (10, 30)
+        assert (c.start.hour, c.start.minute) == (9, 30)

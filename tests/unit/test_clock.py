@@ -127,7 +127,7 @@ class TestSession:
         assert ck.simulation_window(et(now)) == (et(start), minutes)
 
     def test_default_replay_start(self):
-        assert ck.default_replay_start(date(2026, 10, 19)) == et("2026-10-19T10:30")
+        assert ck.default_replay_start(date(2026, 10, 19)) == et("2026-10-19T09:30")
         assert ck.default_replay_start(date(2026, 10, 25), time(9, 45)) == et("2026-10-23T09:45")
 
 

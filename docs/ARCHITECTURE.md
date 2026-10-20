@@ -152,7 +152,7 @@ datetime. Three implementations, chosen by `GEX_CLOCK`:
 |---|---|---|
 | `SystemClock` | the wall clock, in New York time | live providers (the default when `GEX_PROVIDER` is not synthetic) |
 | `FixedClock` | stopped at `GEX_CLOCK_START` | tests and reproducible screenshots |
-| `ReplayClock` | starts at `GEX_CLOCK_START` (default 10:30 New York time on the latest weekday), runs at `GEX_CLOCK_SPEED`, and loops inside that session: at 16:00 it wraps to 09:30 | the synthetic demo (the default) |
+| `ReplayClock` | starts at `GEX_CLOCK_START` (default 09:30 New York time, the open, on the latest weekday), runs at `GEX_CLOCK_SPEED`, and loops inside that session: at 16:00 it wraps to 09:30 | the synthetic demo (the default) |
 
 A replay start outside a session rolls forward to the next 09:30 open. The
 clock is created once per settings (see caching below), so the replay
